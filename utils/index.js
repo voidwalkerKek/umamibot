@@ -44,7 +44,7 @@ const getMangasSourceTree = async function () {
   }
   
   
-  const souceTree = getFolders(process.env.SOURCES_FOLDER_PATH);
+  const souceTree = getFolders(`${process.env.SOURCES_FOLDER_PATH}`);
   souceTree.map(node => {
     return node.children = getFiles(node.path.toString());
   });
