@@ -46,7 +46,7 @@ const getMangasSourceTree = async function () {
   }
 
 
-  const souceTree = getFolders('scraper/sources');
+  const souceTree = getFolders(path.resolve('./scraper/sources/'));
   souceTree.map(node => {
     return node.children = getFiles(node.path.toString());
   });
@@ -75,7 +75,7 @@ const getMangasSourceTreeNames = async function () {
   }
 
 
-  const souceTree = getFolders('scraper/sources');
+  const souceTree = getFolders(path.resolve('./scraper/sources/'));
   souceTree.map(node => {
     return node.children = getFiles(node.path.toString());
   });

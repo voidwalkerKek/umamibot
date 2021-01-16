@@ -1,10 +1,10 @@
 const mangasIn = require('./mangasIn');
 const manhwa18 = require('./manhwa18');
 const fs = require('fs');
+const path = require('path');
 const yaml = require('js-yaml');
 const { createFolderIfNotExist, getFileData, removeIllegalCharacters } = require('../../utils/index');
 const { getMangasSourceTreeNames } = require('../../utils');
-const { title } = require('process');
 
 const getManga = async function (url) {
   if (url.includes('mangas.in')) {
@@ -20,13 +20,13 @@ const saveManga = async function (chat, url, mangaInfo) {
   let yamlStr;
 
   try {
-    createFolderIfNotExist(`scraper/sources/${mangaInfo.source}`);
-    const mangaLocalData = getFileData(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`);
+    createFolderIfNotExist(path.resolve(`scraper/sources/${mangaInfo.source}`));
+    const mangaLocalData = getFileData(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`));
     if (!mangaLocalData) {
       mangaInfo.baseUrl = url;
       mangaInfo.readBy = [chat];
       yamlStr = yaml.dump(mangaInfo);
-      fs.writeFileSync(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`, yamlStr, 'utf8');
+      fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
     } else {
       if (mangaLocalData.readBy) {
         if (!mangaLocalData.readBy.includes(chat)) {
@@ -36,7 +36,7 @@ const saveManga = async function (chat, url, mangaInfo) {
         mangaLocalData.readBy = [chat];
       }
       yamlStr = yaml.dump(mangaLocalData);
-      fs.writeFileSync(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`, yamlStr, 'utf8');
+      fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
     }
   } catch (error) {
     console.log(error);
@@ -68,7 +68,7 @@ const removeManga = async function (chat, source, mangaTitle) {
     const index = mangaInfo.readBy.indexOf(chat);
     mangaInfo.readBy.splice(index, 1);
     yamlStr = yaml.dump(mangaInfo);
-      fs.writeFileSync(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`, yamlStr, 'utf8');
+      fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
     result = 'Manga removed from tracking list.'
   } else {
     result = 'Manga not found in tracking list. Try using /list to display the mangas that are being tracked.';
