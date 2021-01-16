@@ -55,7 +55,7 @@ const getMangasList = async function (chat) {
       }
     }
   }
-  return list;
+  return list.length > 0 ? list : 'No mangas tracked yet. Add a new manga using the command /add [url]. Use /help for more information.';
 }
 
 const removeManga = async function (chat, source, mangaTitle) {
