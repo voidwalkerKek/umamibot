@@ -68,7 +68,7 @@ const removeManga = async function (chat, source, mangaTitle) {
     const index = mangaInfo.readBy.indexOf(chat);
     mangaInfo.readBy.splice(index, 1);
     yamlStr = yaml.dump(mangaInfo);
-      fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
+    fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
     result = 'Manga removed from tracking list.'
   } else {
     result = 'Manga not found in tracking list. Try using /list to display the mangas that are being tracked.';
