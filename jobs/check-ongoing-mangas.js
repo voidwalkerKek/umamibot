@@ -1,6 +1,5 @@
 const { getManga } = require('../scraper/sources');
-const { getMangasSourceTree } = require('../utils/index');
-const { getFileData, log } = require('../utils/index');
+const { getMangasSourceTree, getFileData, log } = require('../utils/index');
 const cron = require('node-cron');
 const chalk = require('chalk');
 const fs = require('fs');
@@ -8,19 +7,22 @@ const yaml = require('js-yaml');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-const job = cron.schedule('*/5 * * * *', () => {
-  log(`${chalk.blue('Started')} - Check Ongoing Mangas`);
-
+const job = cron.schedule('0 * * * *', async () => {
   try {
-    getMangasSourceTree().then((sourceTree) => {
-      sourceTree.forEach(node => {
-        node.children.forEach(async (child) => {
+    await getMangasSourceTree().then(async (sourceTree) => {
+      sourceTree.forEach(async (node) => {
+        for (const child of node.children) {
           const mangaLocalData = getFileData(child);
+          log(chalk.yellow(`Checking ${mangaLocalData.title} for new chapters`));
           const mangaOnlineData = await getManga(mangaLocalData.baseUrl);
-
-          if (new Date(mangaOnlineData.latestChapter.released) > new Date(mangaLocalData.latestChapter.released)) {
+          if (mangaOnlineData.latestChapter.number != mangaLocalData.latestChapter.number) {
+            log(chalk.green(`${mangaOnlineData.title} - Chapter ${mangaOnlineData.latestChapter.number} has been released!`));
             mangaLocalData.readBy.forEach(chatId => {
-              bot.telegram.sendPhoto(chatId, mangaOnlineData.img, { caption: `*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${new Date(mangaOnlineData.latestChapter.released).toLocaleDateString()}` });
+              bot.telegram.sendPhoto(chatId, mangaOnlineData.img, { caption: `*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}` })
+              .catch((err) => {
+                console.log(err);
+                ctx.replyWithMarkdown(`*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}`);
+              });
             });
 
             let yamlStr = yaml.dump({
@@ -30,12 +32,12 @@ const job = cron.schedule('*/5 * * * *', () => {
             });
             fs.writeFileSync(child, yamlStr, 'utf8');
           }
-        });
+          log(chalk.yellow(`${mangaLocalData.title} Finished`));
+        }
       });
     });
-    log(`${chalk.blue('Finished')} - Check Ongoing Mangas`);
   } catch (error) {
-    log(`${chalk.red('Error')} - Check Ongoing Mangas`);
+    log(`${chalk.red('Error')} - ${error}`);
   }
 });
 

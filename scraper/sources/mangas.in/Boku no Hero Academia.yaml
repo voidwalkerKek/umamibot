@@ -1,0 +1,14 @@
+source: mangas.in
+title: Boku no Hero Academia
+status: ACTIVO
+img: https://mangas.in/uploads/manga/boku-no-hero-academia/cover/cover_250x350.jpg
+rating: '4.25'
+currentVolume: ' Volume 30'
+latestChapter:
+  number: '297'
+  title: Tatarus
+  released: 15 Jan. 2021
+  readUrl: https://mangas.in/manga/boku-no-hero-academia/297-pmp9e
+baseUrl: https://mangas.in/manga/boku-no-hero-academia
+readBy:
+  - 395092061

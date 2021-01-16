@@ -1,0 +1,14 @@
+source: mangas.in
+title: Berserk
+status: ACTIVO
+img: https://mangas.in/uploads/manga/berserk/cover/cover_250x350.jpg
+rating: '4.18'
+currentVolume: ' Volume 41'
+latestChapter:
+  number: '362'
+  title: Fantasma
+  released: 22 Oct. 2020
+  readUrl: https://mangas.in/manga/berserk/362-k5zgg
+baseUrl: https://mangas.in/manga/berserk
+readBy:
+  - 395092061
