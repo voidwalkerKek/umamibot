@@ -21,7 +21,6 @@ const saveManga = async function (chat, url, mangaInfo) {
 
   try {
     createFolderIfNotExist(path.resolve(`scraper/sources/${mangaInfo.source}`));
-    console.log(path.resolve(`scraper/sources/${mangaInfo.source}`));
     const mangaLocalData = getFileData(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`));
     if (!mangaLocalData) {
       mangaInfo.baseUrl = url;
