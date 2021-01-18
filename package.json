@@ -17,6 +17,7 @@
   "author": "franciscoh017",
   "license": "ISC",
   "dependencies": {
+    "applicationinsights": "^1.8.8",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.5",
     "dotenv": "^8.2.0",
