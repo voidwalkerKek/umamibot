@@ -1,22 +1,20 @@
-const puppeteer = require('puppeteer');
+const cheerio = require('cheerio');
+const got = require('got');
 
 module.exports = async function manhwa18(mangaUrl) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto(mangaUrl, { waitUntil: 'networkidle2' });
-
-  let data = await page.evaluate(() => {
+  const response = await got(mangaUrl);
+  const $ = cheerio.load(response.body);
     try {
       const source = 'manhwa18';
-      const title = document.querySelector('.manga-info > h1').innerText;
-      const status = document.querySelector('ul > li:nth-child(6) > a.btn.btn-xs.btn-success').innerText;
-      const rating = document.querySelectorAll('.h0rating > .h0_ratings_on').length;
-      const img = `https://manhwa18.com${document.querySelector('.well > img.thumbnail').getAttribute('src')}`;
+      const title = $('.manga-info > h1').text().trim();
+      const status = $('ul > li:nth-child(6) > a.btn.btn-xs.btn-success').text().trim();
+      const rating = $('.h0rating > .h0_ratings_on').length;
+      const img = `https://manhwa18.com${$('.well > img.thumbnail').attr('src')}`;
       const latestChapter = {
-        number: document.querySelector('#tab-chapper .tab-text > table > tbody > tr > td').innerText.replace(/\D/g,''),
-        title: document.querySelector('#tab-chapper .tab-text > table > tbody > tr > td').innerText,
-        released: document.querySelector('#tab-chapper .tab-text > table > tbody > tr > td:nth-child(2)').innerText,
-        readUrl: `https://manhwa18.com/${document.querySelector('#tab-chapper .tab-text > table > tbody > tr > td a').getAttribute('href')}`,
+        number: $('#tab-chapper .tab-text > table > tbody > tr > td').first().text().trim().replace(/\D/g,''),
+        title: $('#tab-chapper .tab-text > table > tbody > tr > td').text().trim(),
+        released: $('#tab-chapper .tab-text > table > tbody > tr > td:nth-child(2)').first().text().trim(),
+        readUrl: `https://manhwa18.com/${$('#tab-chapper .tab-text > table > tbody > tr > td a').attr('href')}`,
       }
       return {
         source,
@@ -30,7 +28,5 @@ module.exports = async function manhwa18(mangaUrl) {
     } catch (error) {
       console.log(error);
     }
-  });
-  await browser.close();
   return data;
 }

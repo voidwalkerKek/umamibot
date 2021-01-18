@@ -1,25 +1,23 @@
-const puppeteer = require('puppeteer');
+const cheerio = require('cheerio');
+const got = require('got');
 
 module.exports = async function mangasIn(mangaUrl) {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto(mangaUrl, { waitUntil: 'networkidle2' });
-
-  let data = await page.evaluate(() => {
+  const response = await got(mangaUrl);
+  const $ = cheerio.load(response.body);
     try {
       const source = 'mangas.in';
-      const title = document.querySelector('.widget-title').innerText;
-      const status = document.querySelector('.manga-name').innerText;
-      const rating = document.querySelector('#item-rating').getAttribute('data-score');
-      const img = document.querySelector('.boxed > img.img-responsive').getAttribute('src');
-      const currentVolume = document.querySelector('.chapters > li')
-        .innerText.toLowerCase().includes('volume') ? document.querySelector('.chapters > li').innerText : '';
-      const currentVolumeClass = currentVolume == '' ? '' : `.${document.querySelector('.chapters > li').getAttribute('data-volume')}`;
+      const title = $('div.col-sm-12 > h2.widget-title').text().trim();
+      const status = $('.manga-name').text().trim();
+      const rating = $('#item-rating').attr('data-score');
+      const img = $('.boxed > img.img-responsive').attr('src');
+      const currentVolume = $('.chapters > li')
+        .text().trim().toLowerCase().includes('volume') ? $('.chapters > li').text().trim() : '';
+      const currentVolumeClass = currentVolume == '' ? '' : `.${$('.chapters > li').attr('data-volume')}`;
       const latestChapter = {
-        number: document.querySelector(`.chapters > li${currentVolumeClass} > h5 > a`).getAttribute('data-number'),
-        title: document.querySelector(`.chapters > li${currentVolumeClass} > h5 > i`).innerText,
-        released: document.querySelector(`.chapters > li${currentVolumeClass} > .action > div`).innerText,
-        readUrl: document.querySelector(`.chapters > li${currentVolumeClass} > h5 > i > a`).getAttribute('href'),
+        number: $(`.chapters > li${currentVolumeClass} > h5 > a`).attr('data-number'),
+        title: $(`.chapters > li${currentVolumeClass} > h5 > i`).text().trim(),
+        released: $(`.chapters > li${currentVolumeClass} > .action > div.date-chapter-title-rtl`).first().text().trim(),
+        readUrl: $(`.chapters > li${currentVolumeClass} > h5 > i > a`).attr('href'),
       }
 
       return {
@@ -34,7 +32,5 @@ module.exports = async function mangasIn(mangaUrl) {
     } catch (error) {
       console.log(error);
     }
-  });
-  await browser.close();
   return data;
 }
