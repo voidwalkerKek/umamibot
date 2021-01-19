@@ -11,7 +11,7 @@ Supported Sources:
 - manhwa18.com
 - fanfox.net
 
-#Usage
+# Config
 
 Add a .env file with the following variable:
 BOT_TOKEN=[your telegram bot token here]
