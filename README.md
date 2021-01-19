@@ -9,7 +9,7 @@ Made with:
 Supported Sources:
 - mangas.in
 - manhwa18.com
-- mangafreak (comming soon)
+- fanfox.net
 
 #Usage
 
