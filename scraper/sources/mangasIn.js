@@ -7,7 +7,7 @@ module.exports = async function mangasIn(mangaUrl) {
   try {
     const source = 'mangas.in';
     const title = $('div.col-sm-12 > h2.widget-title').text().trim();
-    const status = $('.manga-name').text().trim();
+    const status = $('.manga-name').first().text().trim();
     const rating = $('#item-rating').attr('data-score');
     const img = $('.boxed > img.img-responsive').attr('src');
     const currentVolume = $('.chapters > li').first()
