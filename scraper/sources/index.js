@@ -22,12 +22,11 @@ const getManga = async function (url) {
 
 const saveManga = async function (chat, url, mangaInfo) {
   let yamlStr;
-
+  mangaInfo.baseUrl = url;
   try {
     createFolderIfNotExist(path.resolve(`scraper/sources/${mangaInfo.source}`));
     const mangaLocalData = getFileData(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`));
     if (!mangaLocalData) {
-      mangaInfo.baseUrl = url;
       mangaInfo.readBy = [chat];
       yamlStr = yaml.dump(mangaInfo);
       fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
@@ -39,7 +38,10 @@ const saveManga = async function (chat, url, mangaInfo) {
       } else {
         mangaLocalData.readBy = [chat];
       }
-      yamlStr = yaml.dump(mangaLocalData);
+      yamlStr = yaml.dump({
+        ...mangaInfo,
+        readBy: mangaLocalData.readBy,
+      });
       fs.writeFileSync(path.resolve(`scraper/sources/${mangaInfo.source}/${removeIllegalCharacters(mangaInfo.title)}.yaml`), yamlStr, 'utf8');
     }
   } catch (error) {
