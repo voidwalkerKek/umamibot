@@ -13,11 +13,9 @@ bot.command(['add', 'a', 'A', 'Add', 'ADD'], async (ctx) => {
     const mangaUrl = ctx.update.message.text.substr(urlData.offset, urlData.length);
     const mangaInfo = await getManga(mangaUrl);
     saveManga(ctx.update.message.chat.id, mangaUrl, mangaInfo);
-    ctx.replyWithPhoto(mangaInfo.img, { caption: `*Added*\n${mangaInfo.title} - Chapter #${mangaInfo.latestChapter.number} \n${mangaInfo.latestChapter.readUrl}\nReleased: ${mangaInfo.latestChapter.released}` })
-      .catch((err) => {
-        console.log(err);
-        ctx.replyWithMarkdown(`*Added*\n${mangaInfo.title} - Chapter #${mangaInfo.latestChapter.number} \n${mangaInfo.latestChapter.readUrl}\nReleased: ${mangaInfo.latestChapter.released}`);
-      });
+    ctx.replyWithPhoto(
+      {url: mangaInfo.img},
+      { caption: `*Added*\n${mangaInfo.title} - Chapter #${mangaInfo.latestChapter.number} \n${mangaInfo.latestChapter.readUrl}\nReleased: ${mangaInfo.latestChapter.released}` });
   } catch (error) {
     console.log(error);
     ctx.replyWithMarkdown('Invalid arguments provided. use /help for more info.');

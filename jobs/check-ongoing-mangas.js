@@ -7,7 +7,7 @@ const yaml = require('js-yaml');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
-const job = cron.schedule('0 * * * *', async () => {
+const job = cron.schedule('*/30 * * * *', async () => {
   try {
     await getMangasSourceTree().then(async (sourceTree) => {
       sourceTree.forEach(async (node) => {
@@ -18,11 +18,9 @@ const job = cron.schedule('0 * * * *', async () => {
           if (mangaOnlineData.latestChapter.number != mangaLocalData.latestChapter.number) {
             log(chalk.green(`${mangaOnlineData.title} - Chapter ${mangaOnlineData.latestChapter.number} has been released!`));
             mangaLocalData.readBy.forEach(chatId => {
-              bot.telegram.sendPhoto(chatId, mangaOnlineData.img, { caption: `*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}` })
-              .catch((err) => {
-                console.log(err);
-                ctx.replyWithMarkdown(`*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}`);
-              });
+              bot.telegram.sendPhoto(chatId, {url:mangaOnlineData.img},
+                { caption: `*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}` }
+              );
             });
 
             let yamlStr = yaml.dump({
