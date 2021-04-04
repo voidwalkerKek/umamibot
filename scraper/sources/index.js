@@ -1,6 +1,7 @@
 const mangasIn = require('./mangasIn');
 const manhwa18 = require('./manhwa18');
 const mangafox = require('./mangafox');
+const TMO = require('./tmo');
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
@@ -16,6 +17,9 @@ const getManga = async function (url) {
     return data;
   } else if (url.includes('fanfox')) {
     const data = await mangafox(url);
+    return data;
+  } else if (url.includes('lectortmo')) {
+    const data = await TMO(url);
     return data;
   }
 }
