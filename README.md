@@ -10,6 +10,7 @@ Supported Sources:
 - mangas.in
 - manhwa18.com
 - fanfox.net
+- lectortmo.com
 
 # Config
 
