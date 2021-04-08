@@ -10,7 +10,6 @@ module.exports = async function mangasIn(mangaUrl) {
     const status = $('.book-status').text().trim();
     const rating = $('.score a').text().trim();
     const img = $('.book-thumbnail').attr('src');
-    const currentVolume = '';
     const latestChapter = {
       number: Number($('#chapters > ul > li a').first().text().trim().replace(/[^\d.-]/g, '')),
       title: $('#chapters > ul > li a').first().text().trim(),
@@ -24,7 +23,6 @@ module.exports = async function mangasIn(mangaUrl) {
       status,
       img,
       rating,
-      currentVolume,
       latestChapter
     };
   } catch (error) {

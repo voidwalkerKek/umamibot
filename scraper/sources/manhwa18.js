@@ -22,7 +22,6 @@ module.exports = async function manhwa18(mangaUrl) {
       status,
       img,
       rating,
-      currentVolume: null,
       latestChapter
     };
   } catch (error) {
