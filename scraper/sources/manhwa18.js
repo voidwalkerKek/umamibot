@@ -6,6 +6,7 @@ module.exports = async function manhwa18(mangaUrl) {
   const $ = cheerio.load(response.body);
   try {
     const source = 'manhwa18';
+    const baseUrl = mangaUrl;
     const title = $('.manga-info > h1').text().trim();
     const status = $('ul > li:nth-child(6) > a.btn.btn-xs.btn-success').text().trim();
     const rating = $('.h0rating > .h0_ratings_on').length;
@@ -18,6 +19,7 @@ module.exports = async function manhwa18(mangaUrl) {
     }
     return {
       source,
+      baseUrl,
       title,
       status,
       img,

@@ -6,6 +6,7 @@ module.exports = async function mangasIn(mangaUrl) {
   const $ = cheerio.load(response.body);
   try {
     const source = 'TMO';
+    const baseUrl = mangaUrl;
     const title = $('.element-subtitle').first().text().trim();
     const status = $('.book-status').text().trim();
     const rating = $('.score a').text().trim();
@@ -19,6 +20,7 @@ module.exports = async function mangasIn(mangaUrl) {
 
     return {
       source,
+      baseUrl,
       title,
       status,
       img,
