@@ -10,7 +10,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 const job = cron.schedule('*/0.5 * * * *', async () => {
   try {
     await getMangasSourceTree().then(async (sourceTree) => {
-      for ( const node of sourceTree ) {
+      sourceTree.forEach(async (node) => {
         for (const child of node.children) {
           const mangaLocalData = getFileData(child);
           log(chalk.yellow(`Checking ${mangaLocalData.title} for new chapters`));
@@ -33,7 +33,7 @@ const job = cron.schedule('*/0.5 * * * *', async () => {
           }
           log(chalk.yellow(`${mangaLocalData.title} Finished`));
         }
-      }
+      });
     });
   } catch (error) {
     log(`${chalk.red('Error')} - ${error}`);
