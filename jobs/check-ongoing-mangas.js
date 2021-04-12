@@ -18,8 +18,8 @@ const job = cron.schedule('0,30 * * * *', async () => {
           if (mangaOnlineData.latestChapter.number != mangaLocalData.latestChapter.number) {
             log(chalk.green(`${mangaOnlineData.title} - Chapter ${mangaOnlineData.latestChapter.number} has been released!`));
             const { readBy } = mangaLocalData;
-            readBy.forEach(async (chatId) => {
-              await bot.telegram.sendPhoto(chatId, {url:mangaOnlineData.img},
+            readBy.forEach((chatId) => {
+              bot.telegram.sendPhoto(chatId, {url:mangaOnlineData.img},
                 { caption: `*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}` }
               );
             });
