@@ -1,5 +1,5 @@
 const CRON_STRINGS = {
-  ongoing_mangas: process.env.NODE_ENV == 'PROD' ? '0,30 * * * *' : '*/0.5 * * * *',
+  ongoing_mangas: process.env.NODE_ENV == 'DEV' ? '*/0.5 * * * *' : '0,30 * * * *',
 };
 
 
