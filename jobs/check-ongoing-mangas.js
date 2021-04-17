@@ -6,8 +6,11 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const { CRON_STRINGS: {ongoing_mangas} } = require('./config'); 
 
-const job = cron.schedule('0,30 * * * *', async () => {
+
+
+const job = cron.schedule(ongoing_mangas, async () => {
   try {
     await getMangasSourceTree().then(async (sourceTree) => {
       sourceTree.forEach(async (node) => {
