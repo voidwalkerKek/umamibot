@@ -1,4 +1,4 @@
-const { getManga, saveManga, getMangasList, removeManga } = require('../scraper/sources');
+const { getManga, saveManga, getMangasList, removeManga, toggleRandomMangas } = require('../scraper/sources');
 
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -29,7 +29,6 @@ bot.command(['list', 'LIST', 'l', 'L', 'List'], async (ctx) => {
 
 bot.command(['remove', 'r', 'REMOVE', 'R', 'Remove'], async (ctx) => {
   try {
-    const commandData = ctx.update.message.entities[0];
     const sourceData = ctx.update.message.entities[1];
     const source = ctx.update.message.text.substr(sourceData.offset, sourceData.length);
     const mangaTitle = ctx.update.message.text.substr(sourceData.offset + sourceData.length).trim();
@@ -39,6 +38,11 @@ bot.command(['remove', 'r', 'REMOVE', 'R', 'Remove'], async (ctx) => {
     console.log(error);
     ctx.replyWithMarkdown('Invalid arguments provided. use /help for more info.');
   }
+});
+
+bot.command(['get-random', 'random', 'randoms', 'RANDOM','RANDOMS'], async (ctx) => {
+  const action = await toggleRandomMangas(ctx.update.message.chat.id);
+  ctx.replyWithMarkdown(action);
 });
 
 bot.help((ctx) => {

@@ -5,3 +5,4 @@ if(process.env.NODE_ENV == 'PROD') {
 }
 require('./bot/index');
 require('./jobs/check-ongoing-mangas');
+require('./jobs/get-random-manga');

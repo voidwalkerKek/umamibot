@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const got = require('got');
 
-module.exports = async function mangasIn(mangaUrl) {
+async function mangasIn(mangaUrl) {
   const response = await got(mangaUrl);
   const $ = cheerio.load(response.body);
 
@@ -30,4 +30,32 @@ module.exports = async function mangasIn(mangaUrl) {
     rating,
     latestChapter
   };
+}
+
+async function getRandomManga() {
+  const response = await got('https://mangas.in/random');
+  const $ = cheerio.load(response.body);
+
+  const source = 'mangas.in';
+  const baseUrl = $('meta[property="og:url"]').attr('content');
+  const title = $('div.col-sm-12 > h2.widget-title').text().trim();
+  const status = $('.manga-name').first().text().trim();
+  const rating = $('#item-rating').attr('data-score');
+  const img = $('.boxed > img.img-responsive').attr('src');
+  const NSFW = $('i.adult').val !== undefined ? 'Yes' : 'No';
+
+  return {
+    source,
+    baseUrl,
+    title,
+    status,
+    img,
+    rating,
+    NSFW
+  };
+}
+
+module.exports = {
+  mangasIn,
+  getRandomManga
 }

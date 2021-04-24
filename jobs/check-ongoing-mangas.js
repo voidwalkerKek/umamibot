@@ -10,7 +10,7 @@ const { CRON_STRINGS: {ongoing_mangas} } = require('./config');
 
 
 
-const job = cron.schedule(ongoing_mangas, async () => {
+const jobOngoinMangas = cron.schedule(ongoing_mangas, async () => {
   try {
     await getMangasSourceTree().then(async (sourceTree) => {
       sourceTree.forEach(async (node) => {
@@ -43,4 +43,4 @@ const job = cron.schedule(ongoing_mangas, async () => {
   }
 });
 
-exports.job = job;
+exports.jobOngoinMangas = jobOngoinMangas;
