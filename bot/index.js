@@ -46,7 +46,7 @@ bot.command(['get-random', 'random', 'randoms', 'RANDOM','RANDOMS'], async (ctx)
 });
 
 bot.help((ctx) => {
-  ctx.reply('Commands \n /a [url] or /add [url]  Add manga to be tracked \n /l or /list to show the list of tracked mangas \n /r [source] [title] or /remove [source] [title] to stop tracking a manga');
+  ctx.reply(`Commands \n /a [url] or /add [url]  Add manga to be tracked \n /l or /list to show the list of tracked mangas \n /r [source] [title] or /remove [source] [title] to stop tracking a manga\n /random to receive a random manga everyday`);
 });
 
 bot.launch();
