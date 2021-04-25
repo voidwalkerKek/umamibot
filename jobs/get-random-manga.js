@@ -11,14 +11,14 @@ const jobRandomManga = cron.schedule(randomManga, async () => {
   try {
     log(chalk.blue(`Getting a random manga`));
     const manga = await getRandomManga();
-    
-    const subscribersData = getFileData(path.resolve('./scraper/random-mangas/subscribers.yaml'));
+    log(chalk.greenBright(`Manga Found: ${manga.title}`));
+    const subscribersData = getFileData(path.resolve('random-mangas/subscribers.yaml'));
 
     if (subscribersData && subscribersData.subscribers.length > 0) {
       const { subscribers } = subscribersData;
       subscribers.forEach(chatId => {
         bot.telegram.sendPhoto(chatId, {url:manga.img},
-          { caption: `*RANDOM MANGA OF THE DAY*\n\n${manga.title} \nRating: ${manga.rating} \n18+: ${manga.NSFW} \nStatus: ${manga.status}\n ${manga.baseUrl}` }
+          { caption: `*RANDOM MANGA OF THE DAY*\n\n${manga.title.toUpperCase()} \nRating: ${manga.rating} \n18+: ${manga.NSFW} \nSummary:\n${manga.summary}\nStatus: ${manga.status}\n ${manga.baseUrl}` }
         );   
       });
     }

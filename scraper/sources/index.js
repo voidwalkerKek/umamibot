@@ -79,15 +79,14 @@ const toggleRandomMangas = async function (chatId) {
   const subscribedMessage = 'Subscribed to daily random mangas';
   const unSubscribedMessage = 'Unsubscribed from daily random mangas';
   
-  const SOURCE_DIR = `scraper/random-mangas`;
+  const SOURCE_DIR = `random-mangas`;
   createFolderIfNotExist(path.resolve(SOURCE_DIR));
   const subscribersList = getFileData(path.resolve(`${SOURCE_DIR}/subscribers.yaml`));
 
   if (!subscribersList) {
     yamlStr = yaml.dump({subscribers: [chatId]});
     fs.writeFileSync(path.resolve(`${SOURCE_DIR}/subscribers.yaml`), yamlStr, 'utf8');
-    result = subscribedMessage;
-    return result;
+    return subscribedMessage;
   }
 
   const { subscribers } = subscribersList;
@@ -95,9 +94,14 @@ const toggleRandomMangas = async function (chatId) {
       subscribers.push(chatId);
       result = subscribedMessage;
     } else {
-      const index = subscribers.indexOf(chatId);
-      subscribers.splice(index, 1);
-      result = unSubscribedMessage;
+      if (subscribers.includes(chatId)) {
+        const index = subscribers.indexOf(chatId);
+        subscribers.splice(index, 1);
+        result = unSubscribedMessage;
+      } else {
+        subscribers.push(chatId);
+        result = subscribedMessage;
+      }
     }
 
     yamlStr = yaml.dump({

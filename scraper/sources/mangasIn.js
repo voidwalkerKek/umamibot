@@ -40,6 +40,7 @@ async function getRandomManga() {
   const baseUrl = $('meta[property="og:url"]').attr('content');
   const title = $('div.col-sm-12 > h2.widget-title').text().trim();
   const status = $('.manga-name').first().text().trim();
+  const summary = $('div.well > p').text().trim().length > 0 ? $('div.well > p').text().trim() : 'N/A'
   const rating = $('#item-rating').attr('data-score');
   const img = $('.boxed > img.img-responsive').attr('src');
   const NSFW = $('i.adult').val !== undefined ? 'Yes' : 'No';
@@ -49,6 +50,7 @@ async function getRandomManga() {
     baseUrl,
     title,
     status,
+    summary,
     img,
     rating,
     NSFW
