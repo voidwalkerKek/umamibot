@@ -1,4 +1,4 @@
-const mangasIn = require('../scraper/sources/mangasIn');
+const { mangasIn } = require('../scraper/sources/mangasIn');
 const manhwa18 = require('../scraper/sources/manhwa18');
 const mangafox = require('../scraper/sources/mangafox');
 const anzmangas = require('../scraper/sources/anzmangas');
