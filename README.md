@@ -7,9 +7,11 @@ Made with:
 - Cheerio
 
 Supported Sources:
-- mangas.in
-- manhwa18.com
-- fanfox.net
+- https://mangas.in/
+- https://manhwa18.com/
+- https://fanfox.net/
+- https://lectortmo.com/
+- https://anzmanga.net/
 
 #Usage
 
