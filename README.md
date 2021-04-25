@@ -1,19 +1,19 @@
 # Umamibot
 Telegram bot to track manga chapter releases.
 
-Made with:
+# Built with
 - Node.js
 - Telegraf
 - Cheerio
 
-Supported Sources:
+# Suported manga sources
 - https://mangas.in/
 - https://manhwa18.com/
 - https://fanfox.net/
 - https://lectortmo.com/
 - https://anzmanga.net/
 
-#Usage
+# Usage
 
 Add a .env file with the following variable:
 BOT_TOKEN=[your telegram bot token here]
