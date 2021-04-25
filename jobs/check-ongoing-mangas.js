@@ -6,8 +6,11 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const { CRON_STRINGS: {ongoing_mangas} } = require('./config'); 
 
-const job = cron.schedule('0,30 * * * *', async () => {
+
+
+const jobOngoinMangas = cron.schedule(ongoing_mangas, async () => {
   try {
     await getMangasSourceTree().then(async (sourceTree) => {
       sourceTree.forEach(async (node) => {
@@ -17,7 +20,8 @@ const job = cron.schedule('0,30 * * * *', async () => {
           const mangaOnlineData = await getManga(mangaLocalData.baseUrl);
           if (mangaOnlineData.latestChapter.number != mangaLocalData.latestChapter.number) {
             log(chalk.green(`${mangaOnlineData.title} - Chapter ${mangaOnlineData.latestChapter.number} has been released!`));
-            mangaLocalData.readBy.forEach(chatId => {
+            const { readBy } = mangaLocalData;
+            readBy.forEach((chatId) => {
               bot.telegram.sendPhoto(chatId, {url:mangaOnlineData.img},
                 { caption: `*NEW CHAPTER!*\n${mangaOnlineData.title} - Chapter #${mangaOnlineData.latestChapter.number} \n${mangaOnlineData.latestChapter.readUrl}\nReleased: ${mangaOnlineData.latestChapter.released}` }
               );
@@ -39,4 +43,4 @@ const job = cron.schedule('0,30 * * * *', async () => {
   }
 });
 
-exports.job = job;
+exports.jobOngoinMangas = jobOngoinMangas;

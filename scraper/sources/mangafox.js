@@ -6,11 +6,11 @@ module.exports = async function mangasIn(mangaUrl) {
   const $ = cheerio.load(response.body);
   try {
     const source = 'mangafox';
+    const baseUrl = mangaUrl;
     const title = $('.detail-info-right-title-font').text().trim();
     const status = $('.detail-info-right-title-tip').text().trim();
     const rating = $('.detail-info-right-title-star > span.item-score').text().trim();
     const img = $('img.detail-info-cover-img').attr('src');
-    const currentVolume = '';
     const latestChapter = {
       number: $(`ul.detail-main-list > li > a > div.detail-main-list-main > p.title3`).first().text().trim().replace(/\D/g, ''),
       title:$(`ul.detail-main-list > li > a > div.detail-main-list-main > p.title3`).first().text().trim(),
@@ -20,11 +20,11 @@ module.exports = async function mangasIn(mangaUrl) {
 
     return {
       source,
+      baseUrl,
       title,
       status,
       img,
       rating,
-      currentVolume,
       latestChapter
     };
   } catch (error) {
