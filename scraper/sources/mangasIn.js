@@ -43,7 +43,7 @@ async function getRandomManga() {
   const summary = $('div.well > p').text().trim().length > 0 ? $('div.well > p').text().trim() : 'N/A'
   const rating = $('#item-rating').attr('data-score');
   const img = $('.boxed > img.img-responsive').attr('src');
-  const NSFW = $('i.adult').val !== undefined ? 'Yes' : 'No';
+  const NSFW = $('i.adult').text().trim().length > 0 ? 'Yes' : 'No';
 
   return {
     source,
