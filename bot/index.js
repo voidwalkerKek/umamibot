@@ -1,4 +1,7 @@
 const { getManga, saveManga, getMangasList, removeManga, toggleRandomMangas } = require('../scraper/sources');
+const { getRandomManga } = require('../scraper/sources/mangasIn');
+const chalk = require('chalk');
+const { log } = require('../utils/index');
 
 const { Telegraf } = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -40,13 +43,27 @@ bot.command(['remove', 'r', 'REMOVE', 'R', 'Remove'], async (ctx) => {
   }
 });
 
-bot.command(['get-random', 'random', 'randoms', 'RANDOM','RANDOMS'], async (ctx) => {
+bot.command(['subscribe'], async (ctx) => {
   const action = await toggleRandomMangas(ctx.update.message.chat.id);
   ctx.replyWithMarkdown(action);
 });
 
+bot.command(['random', 'rndm', 'RANDOM'], async (ctx) => {
+  try {
+  const manga = await getRandomManga();
+  log(chalk.greenBright(`Manga Found: ${manga.title}`));
+  ctx.replyWithPhoto(
+    {url: manga.img},
+    { caption: `${manga.title.toUpperCase()} \nRating: ${manga.rating} \n18+: ${manga.NSFW} \nSummary:\n${manga.summary}\nStatus: ${manga.status}\n ${manga.baseUrl}` });
+  } catch (error) {
+    console.log(error);
+    ctx.replyWithMarkdown('Invalid arguments provided. use /help for more info.');
+  }
+});
+
+
 bot.help((ctx) => {
-  ctx.reply(`Commands \n /a [url] or /add [url]  Add manga to be tracked \n /l or /list to show the list of tracked mangas \n /r [source] [title] or /remove [source] [title] to stop tracking a manga\n /random to receive a random manga everyday`);
+  ctx.reply(`Commands \n /a [url] or /add [url]  Add manga to be tracked \n /l or /list to show the list of tracked mangas \n /r [source] [title] or /remove [source] [title] to stop tracking a manga\n /subscribe to receive a random manga everyday`);
 });
 
 bot.launch();
