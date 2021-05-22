@@ -18,7 +18,7 @@ async function mangasIn(mangaUrl) {
     number: $(`.chapters > li${currentVolumeClass} > h5 > a`).attr('data-number'),
     title: $(`.chapters > li${currentVolumeClass} > h5 > i`).first().text().trim(),
     released: $(`.chapters > li${currentVolumeClass} > .action > div.date-chapter-title-rtl`).first().text().trim(),
-    readUrl: $(`.chapters > li${currentVolumeClass} > h5 > i > a`).attr('href'),
+    readUrl: $(`.chapters > li${currentVolumeClass} > h5 > i > a.capitulo_enlace`).attr('href'),
   }
 
   return {
