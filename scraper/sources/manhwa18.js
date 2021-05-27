@@ -12,7 +12,7 @@ module.exports = async function manhwa18(mangaUrl) {
     const rating = $('.h0rating > .h0_ratings_on').length;
     const img = `https://manhwa18.com${$('.well > img.thumbnail').attr('src')}`;
     const latestChapter = {
-      number: $('#tab-chapper .tab-text > table > tbody > tr > td').first().text().trim().replace(/\D/g, ''),
+      number: Number($('#tab-chapper .tab-text > table > tbody > tr > td').first().text().trim().replace(/\D/g, '')),
       title: $('#tab-chapper .tab-text > table > tbody > tr > td').first().text().trim(),
       released: $('#tab-chapper .tab-text > table > tbody > tr > td:nth-child(2)').first().text().trim(),
       readUrl: `https://manhwa18.com/${$('#tab-chapper .tab-text > table > tbody > tr > td a').attr('href')}`,

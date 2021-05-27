@@ -12,7 +12,7 @@ module.exports = async function mangasIn(mangaUrl) {
     const rating = $('.detail-info-right-title-star > span.item-score').text().trim();
     const img = $('img.detail-info-cover-img').attr('src');
     const latestChapter = {
-      number: $(`ul.detail-main-list > li > a > div.detail-main-list-main > p.title3`).first().text().trim().replace(/\D/g, ''),
+      number: Number($(`ul.detail-main-list > li > a > div.detail-main-list-main > p.title3`).first().text().trim().replace(/\D/g, '')),
       title:$(`ul.detail-main-list > li > a > div.detail-main-list-main > p.title3`).first().text().trim(),
       released: $(`ul.detail-main-list > li > a > div.detail-main-list-main > p.title2`).first().text().trim(),
       readUrl: `http://fanfox.net${$(`ul.detail-main-list > li > a`).attr('href')}`,

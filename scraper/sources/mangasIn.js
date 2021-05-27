@@ -15,7 +15,7 @@ async function mangasIn(mangaUrl) {
     .text().trim().toLowerCase().includes('volume') ? $('.chapters > li').first().text().trim() : '';
   const currentVolumeClass = currentVolume == '' ? '' : `.${$('.chapters > li').attr('data-volume')}`;
   const latestChapter = {
-    number: $(`.chapters > li${currentVolumeClass} > h5 > a`).attr('data-number'),
+    number: Number($(`.chapters > li${currentVolumeClass} > h5 > a`).attr('data-number')),
     title: $(`.chapters > li${currentVolumeClass} > h5 > i`).first().text().trim(),
     released: $(`.chapters > li${currentVolumeClass} > .action > div.date-chapter-title-rtl`).first().text().trim(),
     readUrl: $(`.chapters > li${currentVolumeClass} > h5 > i > a.capitulo_enlace`).attr('href'),
