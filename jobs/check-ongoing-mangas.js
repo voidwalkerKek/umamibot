@@ -18,7 +18,9 @@ const jobOngoinMangas = cron.schedule(ongoing_mangas, async () => {
           const mangaLocalData = getFileData(child);
           log(chalk.yellow(`Checking ${mangaLocalData.title} for new chapters`));
           const mangaOnlineData = await getManga(mangaLocalData.baseUrl);
-          if (mangaOnlineData.latestChapter.number !== mangaLocalData.latestChapter.number) {
+
+          const { number } = mangaOnlineData;
+          if (!isNaN(number) && number !== mangaLocalData.latestChapter.number) {
 
             log(chalk.green(`${mangaOnlineData.title} - Chapter ${mangaOnlineData.latestChapter.number} has been released!`));
             const { readBy } = mangaLocalData;
